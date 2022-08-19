@@ -1,0 +1,6 @@
+.idea
+.vscode
+core/components/priceparser/vendor
+core/components/priceparser/processors/mgr/item
+assets/components/priceparser/js/mgr/widgets/items.grid.js
+assets/components/priceparser/js/mgr/widgets/items.windows.js
