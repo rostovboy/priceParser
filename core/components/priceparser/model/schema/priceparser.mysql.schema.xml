@@ -11,12 +11,12 @@
         <field key="tc" dbtype="decimal" precision="12,2" phptype="float" null="true" default="0"/>
         <field key="rrc" dbtype="decimal" precision="12,2" phptype="float" null="true" default="0"/>
         <field key="margin" dbtype="decimal" precision="12,2" phptype="float" null="true" default="0"/>
-        <field key="min_rent" dbtype="decimal" precision="12,2" phptype="float" null="true" default="0"/>
-        <field key="min_price" dbtype="decimal" precision="12,2" phptype="float" null="true" default="0"/>
-        <!--<field key="oz_cur_price" dbtype="decimal" precision="12,2" phptype="float" null="true" default="0"/>
-        <field key="oz_new_price" dbtype="decimal" precision="12,2" phptype="float" null="true" default="0"/>
-        <field key="ym_cur_price" dbtype="decimal" precision="12,2" phptype="float" null="true" default="0"/>
-        <field key="ym_new_price" dbtype="decimal" precision="12,2" phptype="float" null="true" default="0"/>-->
+        <field key="minrent" dbtype="decimal" precision="12,2" phptype="float" null="true" default="0"/>
+        <field key="minprice" dbtype="decimal" precision="12,2" phptype="float" null="true" default="0"/>
+        <!--<field key="ozcurprice" dbtype="decimal" precision="12,2" phptype="float" null="true" default="0"/>
+        <field key="oznewprice" dbtype="decimal" precision="12,2" phptype="float" null="true" default="0"/>
+        <field key="ymcurprice" dbtype="decimal" precision="12,2" phptype="float" null="true" default="0"/>
+        <field key="ymnewprice" dbtype="decimal" precision="12,2" phptype="float" null="true" default="0"/>-->
 
         <index alias="name" name="name" primary="false" unique="false" type="BTREE">
             <column key="name" length="" collation="A" null="false"/>

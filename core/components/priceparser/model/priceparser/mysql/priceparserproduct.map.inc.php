@@ -18,8 +18,8 @@ $xpdo_meta_map['priceParserProduct']= array (
     'tc' => 0.0,
     'rrc' => 0.0,
     'margin' => 0.0,
-    'min_rent' => 0.0,
-    'min_price' => 0.0,
+    'minrent' => 0.0,
+    'minprice' => 0.0,
   ),
   'fieldMeta' => 
   array (
@@ -87,7 +87,7 @@ $xpdo_meta_map['priceParserProduct']= array (
       'null' => true,
       'default' => 0.0,
     ),
-    'min_rent' => 
+    'minrent' => 
     array (
       'dbtype' => 'decimal',
       'precision' => '12,2',
@@ -95,7 +95,7 @@ $xpdo_meta_map['priceParserProduct']= array (
       'null' => true,
       'default' => 0.0,
     ),
-    'min_price' => 
+    'minprice' => 
     array (
       'dbtype' => 'decimal',
       'precision' => '12,2',

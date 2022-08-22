@@ -12,11 +12,13 @@ $packages = [
         'version' => '1.6.5-pl',
         'service_url' => 'modstore.pro',
     ],
-    'pdoTools' => [
-        'version' => '2.10.0-pl',
-        'service_url' => 'modstore.pro',
-    ],
 ];
+
+// Создаем директорию для импортируемого файла товаров
+@mkdir(MODX_ASSETS_PATH . 'components/priceparser/upload/');
+
+// Создаем директорию для экспортируемого файла товаров
+@mkdir(MODX_ASSETS_PATH . 'components/priceparser/export/');
 
 $downloadPackage = function ($src, $dst) {
     if (ini_get('allow_url_fopen')) {

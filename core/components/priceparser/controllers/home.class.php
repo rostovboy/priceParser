@@ -58,6 +58,8 @@ class priceParserHomeManagerController extends modExtraManagerController
         $this->addJavascript($this->priceParser->config['jsUrl'] . 'mgr/misc/combo.js');
         $this->addJavascript($this->priceParser->config['jsUrl'] . 'mgr/widgets/products.grid.js');
         $this->addJavascript($this->priceParser->config['jsUrl'] . 'mgr/widgets/products.windows.js');
+        $this->addJavascript($this->priceParser->config['jsUrl'] . 'mgr/widgets/marketplaces.grid.js');
+        $this->addJavascript($this->priceParser->config['jsUrl'] . 'mgr/widgets/marketplaces.windows.js');
         $this->addJavascript($this->priceParser->config['jsUrl'] . 'mgr/widgets/home.panel.js');
         $this->addJavascript($this->priceParser->config['jsUrl'] . 'mgr/sections/home.js');
 

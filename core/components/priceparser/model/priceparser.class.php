@@ -31,4 +31,8 @@ class priceParser
         $this->modx->lexicon->load('priceparser:default');
     }
 
+    public function count_numbers($a, $b)
+    {
+        return $a + $b;
+    }
 }

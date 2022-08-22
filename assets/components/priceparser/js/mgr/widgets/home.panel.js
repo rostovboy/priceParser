@@ -21,13 +21,23 @@ priceParser.panel.Home = function (config) {
             border: true,
             hideMode: 'offsets',
             items: [{
-                title: _('priceparser_items'),
+                title: _('priceparser_products'),
                 layout: 'anchor',
                 items: [{
-                    html: _('priceparser_intro_msg'),
+                    html: _('priceparser_products_intro_msg'),
                     cls: 'panel-desc',
                 }, {
-                    xtype: 'priceparser-grid-items',
+                    xtype: 'priceparser-grid-products',
+                    cls: 'main-wrapper',
+                }]
+            }, {
+                title: _('priceparser_marketplaces'),
+                layout: 'anchor',
+                items: [{
+                    html: _('priceparser_marketplaces_intro_msg'),
+                    cls: 'panel-desc',
+                }, {
+                    xtype: 'priceparser-grid-marketplaces',
                     cls: 'main-wrapper',
                 }]
             }]

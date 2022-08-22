@@ -13,11 +13,11 @@ class priceParserProductCreateProcessor extends modObjectCreateProcessor
      */
     public function beforeSet()
     {
-        $name = trim($this->getProperty('name'));
-        if (empty($name)) {
-            $this->modx->error->addField('name', $this->modx->lexicon('priceparser_product_err_name'));
-        } elseif ($this->modx->getCount($this->classKey, ['name' => $name])) {
-            $this->modx->error->addField('name', $this->modx->lexicon('priceparser_product_err_ae'));
+        $sku = trim($this->getProperty('sku'));
+        if (empty($sku)) {
+            $this->modx->error->addField('sku', $this->modx->lexicon('priceparser_product_err_sku'));
+        } elseif ($this->modx->getCount($this->classKey, ['sku' => $sku])) {
+            $this->modx->error->addField('sku', $this->modx->lexicon('priceparser_product_err_ae'));
         }
 
         return parent::beforeSet();

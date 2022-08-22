@@ -30,15 +30,15 @@ class priceParserProductUpdateProcessor extends modObjectUpdateProcessor
     public function beforeSet()
     {
         $id = (int)$this->getProperty('id');
-        $name = trim($this->getProperty('name'));
+        $sku = trim($this->getProperty('sku'));
         if (empty($id)) {
             return $this->modx->lexicon('priceparser_product_err_ns');
         }
 
-        if (empty($name)) {
-            $this->modx->error->addField('name', $this->modx->lexicon('priceparser_product_err_name'));
-        } elseif ($this->modx->getCount($this->classKey, ['name' => $name, 'id:!=' => $id])) {
-            $this->modx->error->addField('name', $this->modx->lexicon('priceparser_product_err_ae'));
+        if (empty($sku)) {
+            $this->modx->error->addField('sku', $this->modx->lexicon('priceparser_product_err_sku'));
+        } elseif ($this->modx->getCount($this->classKey, ['sku' => $sku, 'id:!=' => $id])) {
+            $this->modx->error->addField('sku', $this->modx->lexicon('priceparser_product_err_ae'));
         }
 
         return parent::beforeSet();
