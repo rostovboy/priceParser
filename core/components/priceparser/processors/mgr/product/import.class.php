@@ -84,14 +84,14 @@ class priceParserProductImportProcessor extends modProcessor
             'ozlink3',
             'ozlink4',
             'ozlink5',
-            'ozcurprice',
+            'ozmylink',
             'oznewprice',
             'ymlink1',
             'ymlink2',
             'ymlink3',
             'ymlink4',
             'ymlink5',
-            'ymcurprice',
+            'ymmylink',
             'ymnewprice',
         ];
 
@@ -129,12 +129,19 @@ class priceParserProductImportProcessor extends modProcessor
          */
         foreach ($import_data as $key => $value) {
             foreach ($value as $k => $v) {
-                $this->modx->log(1, $v);
                 $v = preg_replace('|[\s]+|s', ' ', $v);
                 $v = str_replace('\xc2\xa0', ' ', $v);
                 $v = str_replace('( ', '(', $v);
                 $v = str_replace(' )', ')', $v);
-                if (in_array($k, ['sb', 'tc', 'rrc', 'margin', 'minprice', 'ozcurprice', 'oznewprice', 'ymcurprice', 'ymnewprice'])) {
+                if (in_array($k, [
+                    'sb',
+                    'tc',
+                    'rrc',
+                    'margin',
+                    'minprice',
+                    'oznewprice',
+                    'ymnewprice',
+                ])) {
                     $v = str_replace(',', '.', $v);
                     $v = str_replace(' ', '', $v);
                 }
@@ -148,7 +155,7 @@ class priceParserProductImportProcessor extends modProcessor
             $import_data[$key] = $value;
         }
 
-        $this->modx->log(1, print_r($import_data, 1));
+        //$this->modx->log(1, print_r($import_data, 1));
 
         /**
          * Записываем полученные данные
@@ -160,15 +167,186 @@ class priceParserProductImportProcessor extends modProcessor
         $warnings = [];
 
 
-        /*foreach ($import_data as $v) {
+        // Импортируем каждую строку продукта
+        foreach ($import_data as $k => $data) {
+            // Ищем совпадение с базой товаров по sku
+            if ($ms_product = $this->modx->getObject('msProductData', array('sku' => $data['sku']))) {
+                $data = array_merge($data, array('resource_id' => $ms_product->id));
+            } else {
+                $warnings[] = 'Not found product with sku ' . $data['sku'];
+                $this->modx->log(1, 'Not found product with sku ' . $data['sku']);
+            }
+            // Создаем продукт
+            if (!$product = $this->modx->getObject('priceParserProduct', ['sku' => $data['sku']])) {
+                $response = $this->modx->runProcessor('mgr/product/create', $data,
+                    array(
+                        'processors_path' => $this->modx->getOption('core_path') . 'components/priceparser/processors/'
+                    ));
+                if ($response->isError()) {
+                    $errors[] = 'Create Product Error ' . $response->getMessage();
+                    $this->modx->log(1, 'Create Product Error ' . $response->getMessage());
+                    return $response->getMessage();
+                }
+                $created[] = $product_id = $response->response['object']['id'];
+            }
+            // Обновляем продукт
+            else {
+                $updated[] = $product_id = $product->id;
+                $data = array_merge($data, ['id' => $product_id]);
+                $response = $this->modx->runProcessor('mgr/product/update', $data,
+                    array(
+                        'processors_path' => $this->modx->getOption('core_path') . 'components/priceparser/processors/'
+                    ));
+                if ($response->isError()) {
+                    $errors[] = 'Update Product Error ' . $response->getMessage();
+                    $this->modx->log(1, 'Update Product Error ' . $response->getMessage());
+                    return $response->getMessage();
+                }
+            }
 
-        }*/
+            //$this->modx->log(1, print_r($data, 1));
 
+            // Для каждого продукта получаем все ссылки на парсинг цен затем импортируем их в priceParserPrice
+            $price_data = [];
+            $i = -1;
+            foreach ($data as $key => $value) {
+                // OZON
+                if ($key == 'ozlink1') {
+                    $i++;
+                    $price_data[$i]['product_id'] = $product_id;
+                    $price_data[$i]['marketplace_id'] = 1;
+                    $price_data[$i]['name'] = 'ЦКО 1';
+                    $price_data[$i]['link'] = $value;
+                }
+                if ($key == 'ozlink2') {
+                    $i++;
+                    $price_data[$i]['product_id'] = $product_id;
+                    $price_data[$i]['marketplace_id'] = 1;
+                    $price_data[$i]['name'] = 'ЦКО 2';
+                    $price_data[$i]['link'] = $value;
+                }
+                if ($key == 'ozlink3') {
+                    $i++;
+                    $price_data[$i]['product_id'] = $product_id;
+                    $price_data[$i]['marketplace_id'] = 1;
+                    $price_data[$i]['name'] = 'ЦКО 3';
+                    $price_data[$i]['link'] = $value;
+                }
+                if ($key == 'ozlink4') {
+                    $i++;
+                    $price_data[$i]['product_id'] = $product_id;
+                    $price_data[$i]['marketplace_id'] = 1;
+                    $price_data[$i]['name'] = 'ЦКО 4';
+                    $price_data[$i]['link'] = $value;
+                }
+                if ($key == 'ozlink5') {
+                    $i++;
+                    $price_data[$i]['product_id'] = $product_id;
+                    $price_data[$i]['marketplace_id'] = 1;
+                    $price_data[$i]['name'] = 'ЦКО 5';
+                    $price_data[$i]['link'] = $value;
+                }
+                if ($key == 'ozmylink') {
+                    $i++;
+                    $price_data[$i]['product_id'] = $product_id;
+                    $price_data[$i]['marketplace_id'] = 1;
+                    $price_data[$i]['name'] = 'Наша OZON';
+                    $price_data[$i]['link'] = $value;
+                }
+                // ЯндексМаркет
+                if ($key == 'ymlink1') {
+                    $i++;
+                    $price_data[$i]['product_id'] = $product_id;
+                    $price_data[$i]['marketplace_id'] = 2;
+                    $price_data[$i]['name'] = 'ЦКЯ 1';
+                    $price_data[$i]['link'] = $value;
+                }
+                if ($key == 'ymlink2') {
+                    $i++;
+                    $price_data[$i]['product_id'] = $product_id;
+                    $price_data[$i]['marketplace_id'] = 2;
+                    $price_data[$i]['name'] = 'ЦКЯ 2';
+                    $price_data[$i]['link'] = $value;
+                }
+                if ($key == 'ymlink3') {
+                    $i++;
+                    $price_data[$i]['product_id'] = $product_id;
+                    $price_data[$i]['marketplace_id'] = 2;
+                    $price_data[$i]['name'] = 'ЦКЯ 3';
+                    $price_data[$i]['link'] = $value;
+                }
+                if ($key == 'ymlink4') {
+                    $i++;
+                    $price_data[$i]['product_id'] = $product_id;
+                    $price_data[$i]['marketplace_id'] = 2;
+                    $price_data[$i]['name'] = 'ЦКЯ 4';
+                    $price_data[$i]['link'] = $value;
+                }
+                if ($key == 'ymlink5') {
+                    $i++;
+                    $price_data[$i]['product_id'] = $product_id;
+                    $price_data[$i]['marketplace_id'] = 2;
+                    $price_data[$i]['name'] = 'ЦКЯ 5';
+                    $price_data[$i]['link'] = $value;
+                }
+                if ($key == 'ymmylink') {
+                    $i++;
+                    $price_data[$i]['product_id'] = $product_id;
+                    $price_data[$i]['marketplace_id'] = 2;
+                    $price_data[$i]['name'] = 'Наша Маркет';
+                    $price_data[$i]['link'] = $value;
+                }
+            }
 
+            //$this->modx->log(1, print_r($price_data, 1));
 
+            foreach ($price_data as $price_v) {
+                // Импортируем ссылки
+                if (!$price = $this->modx->getObject('priceParserPrice', ['product_id' => $price_v['product_id'], 'name' => $price_v['name']])) {
+                    $response = $this->modx->runProcessor('mgr/price/create', $price_v,
+                        array(
+                            'processors_path' => $this->modx->getOption('core_path') . 'components/priceparser/processors/'
+                        ));
+                    if ($response->isError()) {
+                        $errors[] = 'Create Price Error ' . $response->getMessage();
+                        $this->modx->log(1, 'Create Price Error ' . $response->getMessage());
+                        return $response->getMessage();
+                    }
+                    $price_id = $response->response['object']['id'];
+                }
+                // Обновляем ссылки
+                else {
+                    $price_v = array_merge($price_v, ['id' => $price->id]);
+                    $response = $this->modx->runProcessor('mgr/price/update', $price_v,
+                        array(
+                            'processors_path' => $this->modx->getOption('core_path') . 'components/priceparser/processors/'
+                        ));
+                    if ($response->isError()) {
+                        $errors[] = 'Update Price Error ' . $response->getMessage();
+                        $this->modx->log(1, 'Update Price Error ' . $response->getMessage());
+                        return $response->getMessage();
+                    }
+                }
+            }
+        }
+
+        $summary = [
+            'Файл' => $_FILES['file']['name'],
+            'Всего обработано строк' => count($import_data),
+            'Создано' => count($created),
+            'Обновлено' => count($updated),
+            'Дата импорта' => date('Y-m-d H:i:s'),
+            'Автор' => $this->modx->user->get('id'),
+            'Импортированные товары' => $products,
+            'Ошибки' => $errors,
+            'Предупреждения' => $warnings,
+        ];
+
+        $this->modx->log(1, print_r($summary, 1));
 
         return $this->success('success');
     }
+
 
 
 }

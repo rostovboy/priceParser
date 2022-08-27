@@ -94,3 +94,7 @@ a.priceparser-btn.disabled, fieldset[disabled] a.priceparser-btn { pointer-event
 .priceparser-btn-xs { padding: 1px 5px; font-size: 12px; line-height: 1.5; border-radius: 3px }
 .priceparser-btn-block { display: block; width: 100% }
 .priceparser-btn-block + .priceparser-btn-block { margin-top: 5px }
+
+.priceparser-window-tabs {
+    margin-top: 15px;
+}

@@ -1,7 +1,7 @@
-priceParser.grid.Products = function (config) {
+priceParser.grid.Prices = function (config) {
     config = config || {};
     if (!config.id) {
-        config.id = 'priceparser-grid-products';
+        config.id = 'priceparser-grid-prices';
     }
     Ext.applyIf(config, {
         url: priceParser.config.connector_url,
@@ -10,12 +10,13 @@ priceParser.grid.Products = function (config) {
         tbar: this.getTopBar(config),
         sm: new Ext.grid.CheckboxSelectionModel(),
         baseParams: {
-            action: 'mgr/product/getlist'
+            action: 'mgr/price/getlist',
+            product_id: config.record.id
         },
         listeners: {
             rowDblClick: function (grid, rowIndex, e) {
                 var row = grid.store.getAt(rowIndex);
-                this.updateProduct(grid, e, row);
+                this.updatePrice(grid, e, row);
             }
         },
         viewConfig: {
@@ -34,7 +35,7 @@ priceParser.grid.Products = function (config) {
         remoteSort: true,
         autoHeight: true,
     });
-    priceParser.grid.Products.superclass.constructor.call(this, config);
+    priceParser.grid.Prices.superclass.constructor.call(this, config);
 
     // Clear selection on grid refresh
     this.store.on('load', function () {
@@ -43,7 +44,7 @@ priceParser.grid.Products = function (config) {
         }
     }, this);
 };
-Ext.extend(priceParser.grid.Products, MODx.grid.Grid, {
+Ext.extend(priceParser.grid.Prices, MODx.grid.Grid, {
     windows: {},
 
     getMenu: function (grid, rowIndex) {
@@ -55,9 +56,9 @@ Ext.extend(priceParser.grid.Products, MODx.grid.Grid, {
         this.addContextMenuItem(menu);
     },
 
-    createProduct: function (btn, e) {
+    createPrice: function (btn, e) {
         var w = MODx.load({
-            xtype: 'priceparser-product-window-create',
+            xtype: 'priceparser-price-window-create',
             id: Ext.id(),
             listeners: {
                 success: {
@@ -72,7 +73,7 @@ Ext.extend(priceParser.grid.Products, MODx.grid.Grid, {
         w.show(e.target);
     },
 
-    updateProduct: function (btn, e, row) {
+    updatePrice: function (btn, e, row) {
         if (typeof(row) != 'undefined') {
             this.menu.record = row.data;
         }
@@ -84,14 +85,14 @@ Ext.extend(priceParser.grid.Products, MODx.grid.Grid, {
         MODx.Ajax.request({
             url: this.config.url,
             params: {
-                action: 'mgr/product/get',
+                action: 'mgr/price/get',
                 id: id
             },
             listeners: {
                 success: {
                     fn: function (r) {
                         var w = MODx.load({
-                            xtype: 'priceparser-product-window-update',
+                            xtype: 'priceparser-price-window-update',
                             id: Ext.id(),
                             record: r,
                             listeners: {
@@ -111,21 +112,21 @@ Ext.extend(priceParser.grid.Products, MODx.grid.Grid, {
         });
     },
 
-    removeProduct: function () {
+    removePrice: function () {
         var ids = this._getSelectedIds();
         if (!ids.length) {
             return false;
         }
         MODx.msg.confirm({
             title: ids.length > 1
-                ? _('priceparser_products_remove')
-                : _('priceparser_product_remove'),
+                ? _('priceparser_prices_remove')
+                : _('priceparser_price_remove'),
             text: ids.length > 1
-                ? _('priceparser_products_remove_confirm')
-                : _('priceparser_product_remove_confirm'),
+                ? _('priceparser_prices_remove_confirm')
+                : _('priceparser_price_remove_confirm'),
             url: this.config.url,
             params: {
-                action: 'mgr/product/remove',
+                action: 'mgr/price/remove',
                 ids: Ext.util.JSON.encode(ids),
             },
             listeners: {
@@ -139,7 +140,7 @@ Ext.extend(priceParser.grid.Products, MODx.grid.Grid, {
         return true;
     },
 
-    disableProduct: function () {
+    disablePrice: function () {
         var ids = this._getSelectedIds();
         if (!ids.length) {
             return false;
@@ -147,7 +148,7 @@ Ext.extend(priceParser.grid.Products, MODx.grid.Grid, {
         MODx.Ajax.request({
             url: this.config.url,
             params: {
-                action: 'mgr/product/disable',
+                action: 'mgr/price/disable',
                 ids: Ext.util.JSON.encode(ids),
             },
             listeners: {
@@ -160,7 +161,7 @@ Ext.extend(priceParser.grid.Products, MODx.grid.Grid, {
         })
     },
 
-    enableProduct: function () {
+    enablePrice: function () {
         var ids = this._getSelectedIds();
         if (!ids.length) {
             return false;
@@ -168,7 +169,7 @@ Ext.extend(priceParser.grid.Products, MODx.grid.Grid, {
         MODx.Ajax.request({
             url: this.config.url,
             params: {
-                action: 'mgr/product/enable',
+                action: 'mgr/price/enable',
                 ids: Ext.util.JSON.encode(ids),
             },
             listeners: {
@@ -182,123 +183,73 @@ Ext.extend(priceParser.grid.Products, MODx.grid.Grid, {
     },
 
     getFields: function () {
-        return [
-            'id',
-            'sku',
-            'name',
-            'category',
-            'sb',
-            'tc',
-            'rrc',
-            'margin',
-            'minrent',
-            'minprice',
-            'ozcurprice',
-            'oznewprice',
-            'ymcurprice',
-            'ymnewprice',
-            'active',
-            'actions'];
+        return ['id', 'name', 'product_id', 'link', 'marketplace_id', 'marketplace', 'price', 'createdon', 'updatedon', 'createdby', 'fullname', 'active', 'actions'];
     },
 
     getColumns: function () {
-        return [{
-            header: _('priceparser_product_name'),
+        return [/*{
+            header: _('priceparser_price_id'),
+            dataIndex: 'id',
+            sortable: true,
+            width: 50
+        },*/ {
+            header: _('priceparser_price_name'),
             dataIndex: 'name',
             sortable: true,
+            width: 120,
+        }, {
+            header: _('priceparser_price_marketplace'),
+            dataIndex: 'marketplace_id',
+            sortable: true,
             width: 100,
         }, {
-            header: _('priceparser_product_sku'),
-            dataIndex: 'sku',
+            header: _('priceparser_price_link'),
+            dataIndex: 'link',
+            sortable: false,
+            width: 100,
+        }, {
+            header: _('priceparser_price_price'),
+            dataIndex: 'price',
             sortable: false,
             width: 70,
-        }, {
-            header: _('priceparser_product_category'),
-            dataIndex: 'category',
-            sortable: true,
-            width: 100,
-        }, {
-            header: _('priceparser_product_sb'),
-            dataIndex: 'sb',
-            sortable: true,
-            width: 50,
-        }, {
-            header: _('priceparser_product_tc'),
-            dataIndex: 'tc',
-            sortable: true,
-            width: 50,
-        }, {
-            header: _('priceparser_product_rrc'),
-            dataIndex: 'rrc',
-            sortable: true,
-            width: 50,
-        }, {
-            header: _('priceparser_product_margin'),
-            dataIndex: 'margin',
-            sortable: true,
-            width: 50,
-        }, {
-            header: _('priceparser_product_minrent'),
-            dataIndex: 'minrent',
-            sortable: true,
-            width: 60,
-        }, {
-            header: _('priceparser_product_minprice'),
-            dataIndex: 'minprice',
-            sortable: true,
-            width: 60,
-        }, {
-            header: _('priceparser_product_ozcurprice'),
-            dataIndex: 'ozcurprice',
-            sortable: true,
-            width: 60,
-        }, {
-            header: _('priceparser_product_oznewprice'),
-            dataIndex: 'oznewprice',
-            sortable: true,
-            width: 60,
-        }, {
-            header: _('priceparser_product_ymcurprice'),
-            dataIndex: 'ymcurprice',
-            sortable: true,
-            width: 60,
-        }, {
-            header: _('priceparser_product_ymnewprice'),
-            dataIndex: 'ymnewprice',
-            sortable: true,
-            width: 60,
-        },/*{
-            header: _('priceparser_product_active'),
-            dataIndex: 'active',
-            renderer: priceParser.utils.renderBoolean,
+        }, /*{
+            header: _('priceparser_price_createdby'),
+            dataIndex: 'fullname',
+            renderer: priceParser.utils.userLink,
             sortable: true,
             width: 100,
         },*/ {
+            header: _('priceparser_price_createdon'),
+            dataIndex: 'createdon',
+            //renderer: priceParser.utils.formatDate,
+            sortable: true,
+            width: 120,
+        }, {
+            header: _('priceparser_price_updatedon'),
+            dataIndex: 'updatedon',
+            //renderer: priceParser.utils.formatDate,
+            sortable: true,
+            width: 120,
+        }, {
+            header: _('priceparser_price_active'),
+            dataIndex: 'active',
+            renderer: priceParser.utils.renderBoolean,
+            sortable: true,
+            width: 70,
+        }, {
             header: _('priceparser_grid_actions'),
             dataIndex: 'actions',
             renderer: priceParser.utils.renderActions,
             sortable: false,
-            width: 70,
+            width: 100,
             id: 'actions'
         }];
     },
 
     getTopBar: function () {
         return [{
-            text: '<i class="icon icon-plus"></i>&nbsp;' + _('priceparser_product_create'),
-            handler: this.createProduct,
-            scope: this
-        }, {
-            text: '<i class="icon icon-csv"></i>&nbsp;' + _('priceparser_products_btn_import'),
-            style: 'margin-left: 30px;',
-            cls: 'primary-button',
-            handler: this.importProducts,
-            scope: this
-        }, {
-            text: '<i class="icon icon-csv"></i>&nbsp;' + _('priceparser_products_btn_export'),
-            style: 'margin-left: 30px;',
-            cls: 'primary-button',
-            handler: this.exportProducts,
+            text: '<i class="icon icon-plus"></i>&nbsp;' + _('priceparser_price_create'),
+            handler: this.createPrice,
             scope: this
         }, '->', {
             xtype: 'priceparser-field-search',
@@ -317,31 +268,6 @@ Ext.extend(priceParser.grid.Products, MODx.grid.Grid, {
                 },
             }
         }];
-    },
-
-    importProducts: function (btn, e) {
-        console.log('import products')
-        var w = MODx.load({
-            xtype: 'priceparser-window-import',
-            id: Ext.id(),
-            baseParams: {
-                action: 'mgr/product/import',
-            },
-            // Обновляем значение грида после импорта
-            listeners: {
-                success: {
-                    fn: function () {
-                        this.refresh();
-                    }, scope: this
-                }
-            }
-        });
-        w.reset();
-        w.show(e.target);
-    },
-
-    exportProducts: function () {
-        console.log('export products')
     },
 
     onClick: function (e) {
@@ -387,41 +313,4 @@ Ext.extend(priceParser.grid.Products, MODx.grid.Grid, {
         this.getBottomToolbar().changePage(1);
     },
 });
-Ext.reg('priceparser-grid-products', priceParser.grid.Products);
-
-
-
-// Окно загрузки файла и импорта
-priceParser.window.ImportProduct = function (config) {
-    config = config || {};
-    if (!config.id) {
-        config.id = 'priceparser-window-import';
-    }
-    Ext.applyIf(config, {
-        title: _('priceparser_product_import_upload'),
-        url: priceParser.config.connector_url,
-        fileUpload: true,
-        saveBtnText: _('priceparser_product_btn_import'),
-        fields: this.getImportFields(config),
-    });
-    priceParser.window.ImportProduct.superclass.constructor.call(this, config);
-};
-Ext.extend(priceParser.window.ImportProduct, MODx.Window, {
-    getImportFields: function (config) {
-        return [{
-            html: _('priceparser_product_import_msg'),
-            id: config.id + '-desc',
-            xtype: 'modx-description',
-            style: 'margin-bottom: 5px; margin-top: 15px;'
-        }, {
-            xtype: 'fileuploadfield',
-            fieldLabel: _('file'),
-            buttonText: _('priceparser_product_import_upload'),
-            name: 'file',
-            id: config.id + '-file',
-            anchor: '100%',
-            //inputType: 'file'
-        }]
-    }
-});
-Ext.reg('priceparser-window-import', priceParser.window.ImportProduct);
+Ext.reg('priceparser-grid-prices', priceParser.grid.Prices);

@@ -10,6 +10,8 @@ $_lang['priceparser_grid_search'] = 'Поиск';
 $_lang['priceparser_grid_actions'] = 'Действия';
 
 $_lang['priceparser_products'] = 'Товары';
+$_lang['priceparser_product'] = 'Товар';
+$_lang['priceparser_product_prices'] = 'Цены и ссылки';
 $_lang['priceparser_product_id'] = 'Id';
 $_lang['priceparser_product_name'] = 'Название';
 $_lang['priceparser_product_sku'] = 'Артикул';
@@ -49,6 +51,7 @@ $_lang['priceparser_product_err_save'] = 'Ошибка при сохранени
 
 $_lang['priceparser_products_btn_import'] = 'Импорт товаров';
 $_lang['priceparser_products_btn_export'] = 'Экспорт товаров и цен';
+$_lang['priceparser_products_btn_refresh'] = 'Обновить цены';
 
 $_lang['priceparser_button_import'] = 'Импортировать товары';
 $_lang['priceparser_product_import_upload'] = 'Загрузить файл';
@@ -81,6 +84,41 @@ $_lang['priceparser_marketplace_err_nf'] = 'Маркетплейс не найд
 $_lang['priceparser_marketplace_err_ns'] = 'Маркетплейс не указан';
 $_lang['priceparser_marketplace_err_remove'] = 'Ошибка при удалении маркетплейса';
 $_lang['priceparser_marketplace_err_save'] = 'Ошибка при сохранении маркетплейса';
+
+
+$_lang['priceparser_prices'] = 'Цены';
+$_lang['priceparser_prices_intro_msg'] = 'На этой вкладке можно добавлять, редактировать, удалять ссылки на 
+страницы конкурентов, которые сразу после сохранения будут пропарсены и обновлены цены';
+$_lang['priceparser_price_id'] = 'Id';
+$_lang['priceparser_price_name'] = 'Название';
+$_lang['priceparser_price_link'] = 'Ссылка';
+$_lang['priceparser_price_marketplace'] = 'Маркетплейс';
+$_lang['priceparser_price_fullname'] = 'Автор';
+$_lang['priceparser_price_price'] = 'Цена';
+$_lang['priceparser_price_createdon'] = 'Создана';
+$_lang['priceparser_price_updatedon'] = 'Обновлена';
+$_lang['priceparser_price_active'] = 'Активная';
+
+$_lang['priceparser_price_create'] = 'Добавить';
+$_lang['priceparser_price_update'] = 'Изменить Предмет';
+$_lang['priceparser_price_enable'] = 'Включить Предмет';
+$_lang['priceparser_prices_enable'] = 'Включить Предметы';
+$_lang['priceparser_price_disable'] = 'Отключить Предмет';
+$_lang['priceparser_prices_disable'] = 'Отключить Предметы';
+$_lang['priceparser_price_remove'] = 'Удалить Предмет';
+$_lang['priceparser_prices_remove'] = 'Удалить Предметы';
+$_lang['priceparser_price_remove_confirm'] = 'Вы уверены, что хотите удалить этот Предмет?';
+$_lang['priceparser_prices_remove_confirm'] = 'Вы уверены, что хотите удалить эти Предметы?';
+
+$_lang['priceparser_price_err_name'] = 'Вы должны указать имя Предмета.';
+$_lang['priceparser_price_err_ae'] = 'Предмет с таким именем уже существует.';
+$_lang['priceparser_price_err_nf'] = 'Предмет не найден.';
+$_lang['priceparser_price_err_ns'] = 'Предмет не указан.';
+$_lang['priceparser_price_err_remove'] = 'Ошибка при удалении Предмета.';
+$_lang['priceparser_price_err_save'] = 'Ошибка при сохранении Предмета.';
+
+
+
 
 
 

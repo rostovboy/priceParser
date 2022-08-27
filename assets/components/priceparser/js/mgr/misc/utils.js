@@ -97,3 +97,30 @@ priceParser.utils.renderActions = function (value, props, row) {
         res.join('')
     );
 };
+
+priceParser.utils.formatDate = function (string) {
+    if (string && string != '0000-00-00 00:00:00' && string != '-1-11-30 00:00:00' && string != 0) {
+        var date = /^[0-9]+$/.test(string)
+            ? new Date(string * 1000)
+            : new Date(string.replace(/(\d+)-(\d+)-(\d+)/, '$2/$3/$1'));
+
+        console.log(date)
+
+        return date.strftime('%d.%m.%Y <span class="action-gray">%H:%M</span>');
+    } else {
+        return '&nbsp;';
+    }
+};
+
+priceParser.utils.userLink = function(val,cell,row) {
+    if (!val) {return '';}
+    var action = MODx.action ? MODx.action['security/user/update'] : 'security/user/update';
+    if (row.data['createdby']) {
+        var id = row.data['createdby'];
+    } else {
+        var id = row.data['id'];
+    }
+    var url = 'index.php?a='+action+'&id='+id;
+    //console.info(row);
+    return '<a href="' + url + '" target="_blank">' + val + '</a>';
+};

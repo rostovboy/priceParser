@@ -1,11 +1,11 @@
 <?php
 
-class priceParserProductGetListProcessor extends modObjectGetListProcessor
+class priceParserPriceGetListProcessor extends modObjectGetListProcessor
 {
-    public $objectType = 'priceParserProduct';
-    public $classKey = 'priceParserProduct';
-    public $defaultSortField = 'id';
-    public $defaultSortDirection = 'DESC';
+    public $objectType = 'priceParserPrice';
+    public $classKey = 'priceParserPrice';
+    public $defaultSortField = 'marketplace_id';
+    public $defaultSortDirection = 'ASC';
     //public $permission = 'list';
 
 
@@ -17,18 +17,8 @@ class priceParserProductGetListProcessor extends modObjectGetListProcessor
      */
     public function beforeQuery()
     {
-
         if (!$this->checkPermissions()) {
             return $this->modx->lexicon('access_denied');
-        }
-
-        //$this->modx->log(1, print_r($this->modx->user->getUserGroupNames(), 1));
-        $groups = $this->modx->user->getUserGroupNames();
-
-        if (!in_array('Administrator', $groups)) {
-            if (!in_array('Marketologs', $groups)) {
-                return $this->modx->lexicon('access_denied');
-            }
         }
 
         return true;
@@ -42,6 +32,10 @@ class priceParserProductGetListProcessor extends modObjectGetListProcessor
      */
     public function prepareQueryBeforeCount(xPDOQuery $c)
     {
+        $c->where(array('product_id' => $this->getProperty('product_id')));
+
+        $this->modx->log(1, $this->getProperty('product_id'));
+
         $query = trim($this->getProperty('query'));
         if ($query) {
             $c->where([
@@ -61,7 +55,6 @@ class priceParserProductGetListProcessor extends modObjectGetListProcessor
      */
     public function prepareRow(xPDOObject $object)
     {
-
         $array = $object->toArray();
         $array['actions'] = [];
 
@@ -69,9 +62,9 @@ class priceParserProductGetListProcessor extends modObjectGetListProcessor
         $array['actions'][] = [
             'cls' => '',
             'icon' => 'icon icon-edit',
-            'title' => $this->modx->lexicon('priceparser_product_update'),
-            //'multiple' => $this->modx->lexicon('priceparser_products_update'),
-            'action' => 'updateProduct',
+            'title' => $this->modx->lexicon('priceparser_price_update'),
+            //'multiple' => $this->modx->lexicon('priceparser_prices_update'),
+            'action' => 'updatePrice',
             'button' => true,
             'menu' => true,
         ];
@@ -80,9 +73,9 @@ class priceParserProductGetListProcessor extends modObjectGetListProcessor
             $array['actions'][] = [
                 'cls' => '',
                 'icon' => 'icon icon-power-off action-green',
-                'title' => $this->modx->lexicon('priceparser_product_enable'),
-                'multiple' => $this->modx->lexicon('priceparser_products_enable'),
-                'action' => 'enableProduct',
+                'title' => $this->modx->lexicon('priceparser_price_enable'),
+                'multiple' => $this->modx->lexicon('priceparser_prices_enable'),
+                'action' => 'enablePrice',
                 'button' => true,
                 'menu' => true,
             ];
@@ -90,9 +83,9 @@ class priceParserProductGetListProcessor extends modObjectGetListProcessor
             $array['actions'][] = [
                 'cls' => '',
                 'icon' => 'icon icon-power-off action-gray',
-                'title' => $this->modx->lexicon('priceparser_product_disable'),
-                'multiple' => $this->modx->lexicon('priceparser_products_disable'),
-                'action' => 'disableProduct',
+                'title' => $this->modx->lexicon('priceparser_price_disable'),
+                'multiple' => $this->modx->lexicon('priceparser_prices_disable'),
+                'action' => 'disablePrice',
                 'button' => true,
                 'menu' => true,
             ];
@@ -102,9 +95,9 @@ class priceParserProductGetListProcessor extends modObjectGetListProcessor
         $array['actions'][] = [
             'cls' => '',
             'icon' => 'icon icon-trash-o action-red',
-            'title' => $this->modx->lexicon('priceparser_product_remove'),
-            'multiple' => $this->modx->lexicon('priceparser_products_remove'),
-            'action' => 'removeProduct',
+            'title' => $this->modx->lexicon('priceparser_price_remove'),
+            'multiple' => $this->modx->lexicon('priceparser_prices_remove'),
+            'action' => 'removePrice',
             'button' => true,
             'menu' => true,
         ];
@@ -114,4 +107,4 @@ class priceParserProductGetListProcessor extends modObjectGetListProcessor
 
 }
 
-return 'priceParserProductGetListProcessor';
+return 'priceParserPriceGetListProcessor';

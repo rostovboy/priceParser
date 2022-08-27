@@ -107,7 +107,7 @@ priceParser.window.UpdateProduct = function (config) {
     }
     Ext.applyIf(config, {
         title: _('priceparser_product_update'),
-        width: 550,
+        width: 1000,
         autoHeight: true,
         url: priceParser.config.connector_url,
         action: 'mgr/product/update',
@@ -123,6 +123,30 @@ priceParser.window.UpdateProduct = function (config) {
 Ext.extend(priceParser.window.UpdateProduct, MODx.Window, {
 
     getFields: function (config) {
+        return [{
+            xtype: 'modx-tabs',
+            cls: 'priceparser-window-tabs',
+            deferredRender: false,
+            border: true,
+            items: [{
+                title: _('priceparser_product'),
+                hideMode: 'offsets',
+                layout: 'form',
+                border: true,
+                items: this.getTabProduct(config),
+            }, {
+                title: _('priceparser_product_prices'),
+                hideMode: 'offsets',
+                border: true,
+                xtype: 'priceparser-grid-prices',
+                layout: 'anchor',
+                record: config.record.object,
+                pageSize: 12
+            }]
+        }];
+    },
+
+    getTabProduct: function (config) {
         return [{
             xtype: 'hidden',
             name: 'id',

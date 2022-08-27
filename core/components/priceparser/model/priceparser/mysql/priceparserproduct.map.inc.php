@@ -10,7 +10,7 @@ $xpdo_meta_map['priceParserProduct']= array (
   ),
   'fields' => 
   array (
-    'product_id' => NULL,
+    'resource_id' => NULL,
     'sku' => '',
     'name' => '',
     'category' => '',
@@ -20,10 +20,23 @@ $xpdo_meta_map['priceParserProduct']= array (
     'margin' => 0.0,
     'minrent' => 0.0,
     'minprice' => 0.0,
+    'ozlink1' => '',
+    'ozlink2' => '',
+    'ozlink3' => '',
+    'ozlink4' => '',
+    'ozlink5' => '',
+    'ozmylink' => '',
+    'ymlink1' => '',
+    'ymlink2' => '',
+    'ymlink3' => '',
+    'ymlink4' => '',
+    'ymlink5' => '',
+    'ymmylink' => '',
+    'active' => 1,
   ),
   'fieldMeta' => 
   array (
-    'product_id' => 
+    'resource_id' => 
     array (
       'dbtype' => 'int',
       'precision' => '10',
@@ -103,6 +116,110 @@ $xpdo_meta_map['priceParserProduct']= array (
       'null' => true,
       'default' => 0.0,
     ),
+    'ozlink1' => 
+    array (
+      'dbtype' => 'varchar',
+      'precision' => '255',
+      'phptype' => 'string',
+      'null' => false,
+      'default' => '',
+    ),
+    'ozlink2' => 
+    array (
+      'dbtype' => 'varchar',
+      'precision' => '255',
+      'phptype' => 'string',
+      'null' => false,
+      'default' => '',
+    ),
+    'ozlink3' => 
+    array (
+      'dbtype' => 'varchar',
+      'precision' => '255',
+      'phptype' => 'string',
+      'null' => false,
+      'default' => '',
+    ),
+    'ozlink4' => 
+    array (
+      'dbtype' => 'varchar',
+      'precision' => '255',
+      'phptype' => 'string',
+      'null' => false,
+      'default' => '',
+    ),
+    'ozlink5' => 
+    array (
+      'dbtype' => 'varchar',
+      'precision' => '255',
+      'phptype' => 'string',
+      'null' => false,
+      'default' => '',
+    ),
+    'ozmylink' => 
+    array (
+      'dbtype' => 'varchar',
+      'precision' => '255',
+      'phptype' => 'string',
+      'null' => false,
+      'default' => '',
+    ),
+    'ymlink1' => 
+    array (
+      'dbtype' => 'varchar',
+      'precision' => '255',
+      'phptype' => 'string',
+      'null' => false,
+      'default' => '',
+    ),
+    'ymlink2' => 
+    array (
+      'dbtype' => 'varchar',
+      'precision' => '255',
+      'phptype' => 'string',
+      'null' => false,
+      'default' => '',
+    ),
+    'ymlink3' => 
+    array (
+      'dbtype' => 'varchar',
+      'precision' => '255',
+      'phptype' => 'string',
+      'null' => false,
+      'default' => '',
+    ),
+    'ymlink4' => 
+    array (
+      'dbtype' => 'varchar',
+      'precision' => '255',
+      'phptype' => 'string',
+      'null' => false,
+      'default' => '',
+    ),
+    'ymlink5' => 
+    array (
+      'dbtype' => 'varchar',
+      'precision' => '255',
+      'phptype' => 'string',
+      'null' => false,
+      'default' => '',
+    ),
+    'ymmylink' => 
+    array (
+      'dbtype' => 'varchar',
+      'precision' => '255',
+      'phptype' => 'string',
+      'null' => false,
+      'default' => '',
+    ),
+    'active' => 
+    array (
+      'dbtype' => 'tinyint',
+      'precision' => '1',
+      'phptype' => 'boolean',
+      'null' => true,
+      'default' => 1,
+    ),
   ),
   'indexes' => 
   array (
@@ -131,6 +248,22 @@ $xpdo_meta_map['priceParserProduct']= array (
       'columns' => 
       array (
         'sku' => 
+        array (
+          'length' => '',
+          'collation' => 'A',
+          'null' => false,
+        ),
+      ),
+    ),
+    'active' => 
+    array (
+      'alias' => 'active',
+      'primary' => false,
+      'unique' => false,
+      'type' => 'BTREE',
+      'columns' => 
+      array (
+        'active' => 
         array (
           'length' => '',
           'collation' => 'A',

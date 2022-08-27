@@ -3,7 +3,7 @@
        version="1.1">
 
     <object class="priceParserProduct" table="priceparser_products" extends="xPDOSimpleObject">
-        <field key="product_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false"/>
+        <field key="resource_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false"/>
         <field key="sku" dbtype="varchar" precision="50" phptype="string" null="false" default=""/>
         <field key="name" dbtype="varchar" precision="100" phptype="string" null="false" default=""/>
         <field key="category" dbtype="varchar" precision="100" phptype="string" null="false" default=""/>
@@ -13,6 +13,7 @@
         <field key="margin" dbtype="decimal" precision="12,2" phptype="float" null="true" default="0"/>
         <field key="minrent" dbtype="decimal" precision="12,2" phptype="float" null="true" default="0"/>
         <field key="minprice" dbtype="decimal" precision="12,2" phptype="float" null="true" default="0"/>
+        <field key="active" dbtype="tinyint" precision="1" phptype="boolean" null="true" default="1"/>
         <!--<field key="ozcurprice" dbtype="decimal" precision="12,2" phptype="float" null="true" default="0"/>
         <field key="oznewprice" dbtype="decimal" precision="12,2" phptype="float" null="true" default="0"/>
         <field key="ymcurprice" dbtype="decimal" precision="12,2" phptype="float" null="true" default="0"/>
@@ -24,20 +25,35 @@
         <index alias="sku" name="sku" primary="false" unique="false" type="BTREE">
             <column key="sku" length="" collation="A" null="false"/>
         </index>
+        <index alias="active" name="active" primary="false" unique="false" type="BTREE">
+            <column key="active" length="" collation="A" null="false"/>
+        </index>
 
-        <composite alias="Prices" class="priceParserProductPrice" local="id" foreign="agreement_id" cardinality="many"
+        <composite alias="Prices" class="priceParserPrice" local="id" foreign="agreement_id" cardinality="many"
                    owner="local"/>
     </object>
 
-    <object class="priceParserProductPrice" table="priceparser_product_prices" extends="xPDOSimpleObject">
+    <object class="priceParserPrice" table="priceparser_prices" extends="xPDOSimpleObject">
         <field key="product_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false"/>
         <field key="marketplace_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false"/>
-        <field key="price_col" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false"/>
+        <field key="name" dbtype="varchar" precision="100" phptype="string" null="false" default=""/>
         <field key="price" dbtype="decimal" precision="12,2" phptype="float" null="true" default="0"/>
+        <field key="link" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+        <field key="createdby" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="true" default="0"/>
         <field key="createdon" dbtype="datetime" phptype="datetime" null="true" />
+        <field key="updatedon" dbtype="datetime" phptype="datetime" null="true" />
+        <field key="active" dbtype="tinyint" precision="1" phptype="boolean" null="true" default="1"/>
 
         <index alias="product_id" name="product_id" primary="false" unique="false" type="BTREE">
             <column key="name" length="" collation="A" null="false"/>
+        </index>
+
+        <index alias="name" name="name" primary="false" unique="false" type="BTREE">
+            <column key="name" length="" collation="A" null="false"/>
+        </index>
+
+        <index alias="active" name="active" primary="false" unique="false" type="BTREE">
+            <column key="active" length="" collation="A" null="false"/>
         </index>
 
         <aggregate alias="Product" class="priceParserProduct" local="product_id" foreign="id" owner="foreign" cardinality="one"/>
@@ -60,7 +76,7 @@
             <column key="name" length="" collation="A" null="false"/>
         </index>
 
-        <composite alias="Prices" class="priceParserProductPrice" local="id" foreign="marketplace_id" cardinality="many"
+        <composite alias="Prices" class="priceParserPrice" local="id" foreign="marketplace_id" cardinality="many"
                    owner="local"/>
     </object>
 </model>

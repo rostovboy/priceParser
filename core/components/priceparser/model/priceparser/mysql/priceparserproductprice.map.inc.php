@@ -12,9 +12,10 @@ $xpdo_meta_map['priceParserProductPrice']= array (
   array (
     'product_id' => NULL,
     'marketplace_id' => NULL,
-    'price_col' => NULL,
+    'name' => '',
     'price' => 0.0,
     'createdon' => NULL,
+    'updatedon' => NULL,
   ),
   'fieldMeta' => 
   array (
@@ -34,13 +35,13 @@ $xpdo_meta_map['priceParserProductPrice']= array (
       'phptype' => 'integer',
       'null' => false,
     ),
-    'price_col' => 
+    'name' => 
     array (
-      'dbtype' => 'int',
-      'precision' => '10',
-      'attributes' => 'unsigned',
-      'phptype' => 'integer',
+      'dbtype' => 'varchar',
+      'precision' => '100',
+      'phptype' => 'string',
       'null' => false,
+      'default' => '',
     ),
     'price' => 
     array (
@@ -56,12 +57,34 @@ $xpdo_meta_map['priceParserProductPrice']= array (
       'phptype' => 'datetime',
       'null' => true,
     ),
+    'updatedon' => 
+    array (
+      'dbtype' => 'datetime',
+      'phptype' => 'datetime',
+      'null' => true,
+    ),
   ),
   'indexes' => 
   array (
     'product_id' => 
     array (
       'alias' => 'product_id',
+      'primary' => false,
+      'unique' => false,
+      'type' => 'BTREE',
+      'columns' => 
+      array (
+        'name' => 
+        array (
+          'length' => '',
+          'collation' => 'A',
+          'null' => false,
+        ),
+      ),
+    ),
+    'name' => 
+    array (
+      'alias' => 'name',
       'primary' => false,
       'unique' => false,
       'type' => 'BTREE',
